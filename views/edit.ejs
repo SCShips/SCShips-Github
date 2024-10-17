@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Ship</title>
+</head>
+<body>
+    <h2>Edit Ship</h2>
+    <form action="/edit-ship" method="POST">
+        <input type="hidden" name="id" value="<%= ship.id %>">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" value="<%= ship.name %>" required>
+        </div>
+        <div>
+            <label for="focus">Focus:</label>
+            <input type="text" name="focus" value="<%= ship.focus %>" required>
+        </div>
+        <div>
+            <label for="quantum">Quantum:</label>
+            <input type="text" name="quantum" value="<%= ship.quantum %>" required>
+        </div>
+        <div>
+            <label for="guns">Guns:</label>
+            <input type="text" name="guns" value="<%= ship.guns %>" required>
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+    <a href="/">Cancel</a>
+</body>
+</html>

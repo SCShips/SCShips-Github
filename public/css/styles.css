@@ -1,0 +1,143 @@
+body {
+    background-color: #212121;
+    color: orange;
+    font-family: Arial, sans-serif;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #555;
+    color: orange;
+}
+th {
+    background-color: #333;
+    color: orange;
+    font-weight: bold;
+}
+tr:hover {
+    background-color: #444;
+}
+
+button {
+    color: black;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 100px;
+    text-align: center;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.name-column {
+    color: #98efff;
+    font-weight: bold;
+    text-align: center; /* Centering the Name column */
+}
+
+.installed {
+    background-color: #b7e1cd;  /* Green when installed */
+}
+
+.not-installed {
+    background-color: #ea9999;  /* Red when not installed */
+}
+
+/* Styling for Paint Column */
+.paint-0 {
+    background-color: #ea9999; /* Red for not painted */
+}
+
+.paint-1 {
+    background-color: #b7e1cd; /* Green for painted */
+}
+
+/* Styling for Owned Column */
+.owned-0 {
+    background-color: #ea9999; /* Red for not owned */
+}
+
+.owned-1 {
+    background-color: #b7e1cd; /* Green for owned */
+}
+
+/* Styling for Pledge Column */
+.pledge-1 {
+    background-color: #ffe599; /* Yellow for aUEC */
+}
+
+.pledge-2 {
+    background-color: #9fc5e8; /* Light blue for Pledge */
+}
+
+.pledge-3 {
+    background-color: #b4a7d6; /* Light purple for Loaner */
+}
+
+/* Styling for Insurance Column */
+.insurance-1 {
+    background-color: white; /* White for n/a */
+}
+
+.insurance-2 {
+    background-color: #b7e1cd; /* Green for LTI */
+}
+
+.insurance-3 {
+    background-color: #b4a7d6; /* Purple for 10 year */
+}
+
+/* Align guns column text to the left */
+.guns-column {
+    text-align: left;  /* Aligning the Guns column to the left */
+}
+
+/* Make Edit and Delete buttons smaller */
+.edit-delete-buttons {
+    font-size: 12px; /* Reduce the size of the buttons */
+    padding: 5px;    /* Reduce the padding */
+    width: 75px;     /* Adjust button width */
+}
+
+td {
+    vertical-align: top;
+}
+
+/* Style for the tooltip at the top */
+#tooltip {
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: none;  /* Initially hidden */
+    font-weight: bold;
+}
+
+/* Style the table, buttons, and other elements */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #555;
+}
+button {
+    padding: 5px;
+    cursor: pointer;
+}

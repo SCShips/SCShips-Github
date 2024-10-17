@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ships Table</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Style for the tooltip box */
+        #tooltip-box {
+            width: 100%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            display: none; /* Initially hidden */
+            font-weight: bold;
+        }
+
+        /* Add a page break (margin) at the top of the page */
+        body {
+            margin-top: 50px; /* Adjust this value for the size of the page break */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tooltip Box to display purchase locations -->
+    <div id="tooltip-box"></div>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Focus</th>
+            <th>Quantum</th>
+            <th>Paint</th>
+            <th>Owned</th>
+            <th>Pledge</th>
+            <th>Insurance</th>
+            <th>Guns</th>
+            <th>Actions</th>
+        </tr>
+        <% ships.forEach(function(ship) { %>
+        <tr>
+            <td class="name-column"><%= ship.name %></td>
+            <td><%= ship.focus %></td>
+            <td>
+                <!-- Quantum button with hover effect to show location -->
+                <form action="/update-quantum" method="POST">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <% 
+                        const drive = quantumDrives.find(d => d.name === ship.quantum);
+                        const tooltipText = drive ? `Purchase at ${drive.location}` : 'Location not available';
+                    %>
+                    <button type="submit" class="<%= ship.quantum_installed ? 'installed' : 'not-installed' %>" 
+                        onmouseover="showTooltip('<%= tooltipText %>')" 
+                        onmouseout="hideTooltip()">
+                        <%= ship.quantum %>
+                    </button>
+                </form>
+            </td>
+
+            <!-- Paint Button -->
+            <td>
+                <form action="/update-paint" method="POST">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <button type="submit" class="paint-<%= ship.paint %>"><%= ship.paint ? 'Yes' : 'No' %></button>
+                </form>
+            </td>
+
+            <!-- Owned Button -->
+            <td>
+                <form action="/update-owned" method="POST">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <button type="submit" class="owned-<%= ship.owned %>"><%= ship.owned ? 'Owned' : 'Not Owned' %></button>
+                </form>
+            </td>
+
+            <!-- Pledge Button -->
+            <td>
+                <form action="/update-pledge" method="POST">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <button type="submit" class="pledge-<%= ship.pledge %>">
+                        <%= ship.pledge === 1 ? 'aUEC' : (ship.pledge === 2 ? 'Pledge' : 'Loaner') %>
+                    </button>
+                </form>
+            </td>
+
+            <!-- Insurance Button -->
+            <td>
+                <form action="/update-insurance" method="POST">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <button type="submit" class="insurance-<%= ship.insurance %>">
+                        <%= ship.insurance === 1 ? 'Standard' : (ship.insurance === 2 ? 'LTI' : '10 year') %>
+                    </button>
+                </form>
+            </td>
+
+            <!-- Guns Column -->
+            <td class="guns-column"><%= ship.guns %></td>
+
+            <!-- Actions: Edit and Delete -->
+            <td>
+                <!-- Edit Button -->
+                <form action="/edit-ship" method="GET" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <button type="submit" class="edit-delete-buttons">Edit</button>
+                </form>
+                <!-- Delete Button -->
+                <form action="/delete-ship" method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= ship.id %>">
+                    <button type="submit" class="edit-delete-buttons" onclick="return confirm('Are you sure you want to delete this ship?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+
+    <h3>Add New Ship</h3>
+    <form action="/add-ship" method="POST">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="focus" placeholder="Focus" required>
+        <input type="text" name="quantum" placeholder="Quantum" required>
+        <input type="text" name="guns" placeholder="Guns" required>
+        <button type="submit">Add Ship</button>
+    </form>
+
+    <!-- JavaScript for tooltip functionality -->
+    <script>
+        function showTooltip(text) {
+            var tooltipBox = document.getElementById('tooltip-box');
+            tooltipBox.innerText = text;
+            tooltipBox.style.display = text ? 'block' : 'none';
+        }
+
+        function hideTooltip() {
+            var tooltipBox = document.getElementById('tooltip-box');
+            tooltipBox.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
