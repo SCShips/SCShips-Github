@@ -1,0 +1,15 @@
+dumpysdepot ship tracker
+changelog:
+◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘
+
+v1: 
+• ported php / mariaDB ship tracker to node javascript for easier setup and use
+
+◘◘◘◘◘◘◘◘◘◘
+
+v2: 
+• added frame around table so ship adder is always accessible and table header is always visible
+• retained table position on button click so when page refreshes you don't get pushed to the top of the list
+• polished edit page because it was god awful before
+
+◘◘◘◘◘◘◘◘◘◘

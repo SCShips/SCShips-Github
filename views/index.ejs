@@ -1,147 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ships Table</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        /* Style for the tooltip box */
-        #tooltip-box {
-            width: 100%;
-            background-color: black;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 999;
-            display: none; /* Initially hidden */
-            font-weight: bold;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ships Table</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    /* Style for the tooltip box */
+    #tooltip-box {
+      width: 100%;
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      display: none; /* Initially hidden */
+      font-weight: bold;
+    }
 
-        /* Add a page break (margin) at the top of the page */
-        body {
-            margin-top: 50px; /* Adjust this value for the size of the page break */
-        }
-    </style>
+    /* Add a page break (margin) at the top of the page */
+    body {
+      margin-top: 50px; /* Adjust this value as needed */
+    }
+
+    /* Example container for the table to allow scrolling */
+    .table-container {
+      max-height: 70vh; /* or any height you prefer */
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      margin: 0 auto;
+      width: 90%;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background-color: #272938; /* Slight background so you see it when scrolling */
+      z-index: 1; /* Ensure it stays on top */
+      padding: 8px;
+    }
+
+    tbody td {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Tooltip Box to display purchase locations -->
-    <div id="tooltip-box"></div>
+  <!-- Tooltip Box to display purchase locations -->
+  <div id="tooltip-box"></div>
 
+  <!-- Wrap table in a container to allow scrolling -->
+  <div class="table-container" div id="scrolling-container">
     <table>
+      <thead>
         <tr>
-            <th>Name</th>
-            <th>Focus</th>
-            <th>Quantum</th>
-            <th>Paint</th>
-            <th>Owned</th>
-            <th>Pledge</th>
-            <th>Insurance</th>
-            <th>Guns</th>
-            <th>Actions</th>
+          <th>Name</th>
+          <th>Focus</th>
+          <th>Quantum</th>
+          <th>Paint</th>
+          <th>Owned</th>
+          <th>Pledge</th>
+          <th>Insurance</th>
+          <th>Guns</th>
+          <th>Actions</th>
         </tr>
+      </thead>
+      <tbody>
         <% ships.forEach(function(ship) { %>
         <tr>
-            <td class="name-column"><%= ship.name %></td>
-            <td><%= ship.focus %></td>
-            <td>
-                <!-- Quantum button with hover effect to show location -->
-                <form action="/update-quantum" method="POST">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <% 
-                        const drive = quantumDrives.find(d => d.name === ship.quantum);
-                        const tooltipText = drive ? `Purchase at ${drive.location}` : 'Location not available';
-                    %>
-                    <button type="submit" class="<%= ship.quantum_installed ? 'installed' : 'not-installed' %>" 
-                        onmouseover="showTooltip('<%= tooltipText %>')" 
-                        onmouseout="hideTooltip()">
-                        <%= ship.quantum %>
-                    </button>
-                </form>
-            </td>
+          <td class="name-column"><%= ship.name %></td>
+          <td><%= ship.focus %></td>
+          <td>
+            <!-- Quantum button with hover effect to show location -->
+            <form action="/update-quantum" method="POST">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <% 
+                  const drive = quantumDrives.find(d => d.name === ship.quantum);
+                  const tooltipText = drive ? `Purchase at ${drive.location}` : 'Location not available';
+              %>
+              <button type="submit" class="<%= ship.quantum_installed ? 'installed' : 'not-installed' %>" 
+                      onmouseover="showTooltip('<%= tooltipText %>')" 
+                      onmouseout="hideTooltip()">
+                <%= ship.quantum %>
+              </button>
+            </form>
+          </td>
 
-            <!-- Paint Button -->
-            <td>
-                <form action="/update-paint" method="POST">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <button type="submit" class="paint-<%= ship.paint %>"><%= ship.paint ? 'Yes' : 'No' %></button>
-                </form>
-            </td>
+          <!-- Paint Button -->
+          <td>
+            <form action="/update-paint" method="POST">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <button type="submit" class="paint-<%= ship.paint %>"><%= ship.paint ? 'Yes' : 'No' %></button>
+            </form>
+          </td>
 
-            <!-- Owned Button -->
-            <td>
-                <form action="/update-owned" method="POST">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <button type="submit" class="owned-<%= ship.owned %>"><%= ship.owned ? 'Owned' : 'Not Owned' %></button>
-                </form>
-            </td>
+          <!-- Owned Button -->
+          <td>
+            <form action="/update-owned" method="POST">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <button type="submit" class="owned-<%= ship.owned %>">
+                <%= ship.owned ? 'Owned' : 'Not Owned' %>
+              </button>
+            </form>
+          </td>
 
-            <!-- Pledge Button -->
-            <td>
-                <form action="/update-pledge" method="POST">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <button type="submit" class="pledge-<%= ship.pledge %>">
-                        <%= ship.pledge === 1 ? 'aUEC' : (ship.pledge === 2 ? 'Pledge' : 'Loaner') %>
-                    </button>
-                </form>
-            </td>
+          <!-- Pledge Button -->
+          <td>
+            <form action="/update-pledge" method="POST">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <button type="submit" class="pledge-<%= ship.pledge %>">
+                <%= ship.pledge === 1 ? 'aUEC' : (ship.pledge === 2 ? 'Pledge' : 'Loaner') %>
+              </button>
+            </form>
+          </td>
 
-            <!-- Insurance Button -->
-            <td>
-                <form action="/update-insurance" method="POST">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <button type="submit" class="insurance-<%= ship.insurance %>">
-                        <%= ship.insurance === 1 ? 'Standard' : (ship.insurance === 2 ? 'LTI' : '10 year') %>
-                    </button>
-                </form>
-            </td>
+          <!-- Insurance Button -->
+          <td>
+            <form action="/update-insurance" method="POST">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <button type="submit" class="insurance-<%= ship.insurance %>">
+                <%= ship.insurance === 1 ? 'Standard' : (ship.insurance === 2 ? 'LTI' : '10 year') %>
+              </button>
+            </form>
+          </td>
 
-            <!-- Guns Column -->
-            <td class="guns-column"><%= ship.guns %></td>
+          <!-- Guns Column -->
+          <td class="guns-column"><%= ship.guns %></td>
 
-            <!-- Actions: Edit and Delete -->
-            <td>
-                <!-- Edit Button -->
-                <form action="/edit-ship" method="GET" style="display:inline;">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <button type="submit" class="edit-delete-buttons">Edit</button>
-                </form>
-                <!-- Delete Button -->
-                <form action="/delete-ship" method="POST" style="display:inline;">
-                    <input type="hidden" name="id" value="<%= ship.id %>">
-                    <button type="submit" class="edit-delete-buttons" onclick="return confirm('Are you sure you want to delete this ship?');">Delete</button>
-                </form>
-            </td>
+          <!-- Actions: Edit and Delete -->
+          <td>
+            <!-- Edit Button -->
+            <form action="/edit-ship" method="GET" style="display:inline;">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <button type="submit" class="edit-delete-buttons">Edit</button>
+            </form>
+            <!-- Delete Button -->
+            <form action="/delete-ship" method="POST" style="display:inline;">
+              <input type="hidden" name="id" value="<%= ship.id %>">
+              <button type="submit" class="edit-delete-buttons" onclick="return confirm('Are you sure you want to delete this ship?');">Delete</button>
+            </form>
+          </td>
         </tr>
         <% }) %>
+      </tbody>
     </table>
+  </div>
 
-    <h3>Add New Ship</h3>
-    <form action="/add-ship" method="POST">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="text" name="focus" placeholder="Focus" required>
-        <input type="text" name="quantum" placeholder="Quantum" required>
-        <input type="text" name="guns" placeholder="Guns" required>
-        <button type="submit">Add Ship</button>
-    </form>
+  <h3>Add New Ship</h3>
+  <form action="/add-ship" method="POST">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="focus" placeholder="Focus" required>
+    <input type="text" name="quantum" placeholder="Quantum" required>
+    <input type="text" name="guns" placeholder="Guns">
+    <button type="submit">Add Ship</button>
+  </form>
 
-    <!-- JavaScript for tooltip functionality -->
+  <!-- JavaScript for tooltip functionality -->
     <script>
-        function showTooltip(text) {
-            var tooltipBox = document.getElementById('tooltip-box');
-            tooltipBox.innerText = text;
-            tooltipBox.style.display = text ? 'block' : 'none';
-        }
+    function showTooltip(text) {
+        var tooltipBox = document.getElementById('tooltip-box');
+        tooltipBox.innerText = text;
+        tooltipBox.style.display = text ? 'block' : 'none';
+    }
 
-        function hideTooltip() {
-            var tooltipBox = document.getElementById('tooltip-box');
-            tooltipBox.style.display = 'none';
-        }
+    function hideTooltip() {
+        var tooltipBox = document.getElementById('tooltip-box');
+        tooltipBox.style.display = 'none';
+    }
+
+    // Scroll restoration for the container
+    const container = document.getElementById("scrolling-container");
+
+    // Save container's scroll position on scroll
+    container.addEventListener("scroll", function() {
+      sessionStorage.setItem("shipsTableScroll", container.scrollTop);
+    });
+
+    // Restore scroll position when DOM is loaded
+    window.addEventListener("DOMContentLoaded", function() {
+      const savedPosition = sessionStorage.getItem("shipsTableScroll");
+      if (savedPosition !== null) {
+        container.scrollTop = parseFloat(savedPosition);
+      }
+    });
     </script>
+  
 
 </body>
 </html>
